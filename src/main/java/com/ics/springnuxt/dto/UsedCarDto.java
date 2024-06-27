@@ -1,13 +1,13 @@
 package com.ics.springnuxt.dto;
 
-import com.ics.springnuxt.entity.Car;
+import com.ics.springnuxt.entity.UsedCar;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ShowroomDto {
+public class UsedCarDto {
     private Integer id;
     private String name;
     private String brand;
@@ -16,10 +16,13 @@ public class ShowroomDto {
     private String type;
     private Integer year;
     private String pic;
+    private String ownername;
+    private String ownernum;
+    private String address;
 
     private Boolean fuel;
 
-    public ShowroomDto(Car entity) {
+    public UsedCarDto(UsedCar entity) {
         this.id = entity.getId();
         this.name = entity.getName();
         this.brand = entity.getBrand();
@@ -28,5 +31,9 @@ public class ShowroomDto {
         this.type = entity.getType();
         this.year = entity.getYear();
         this.pic = entity.getPic();
+        this.ownername = entity.getOwnername();
+        this.ownernum = entity.getOwnernum();
+        this.address = entity.getAddress();
+
     }
 }

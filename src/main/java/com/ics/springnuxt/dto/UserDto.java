@@ -1,6 +1,6 @@
 package com.ics.springnuxt.dto;
 
-import com.ics.springnuxt.model.User;
+import com.ics.springnuxt.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +18,6 @@ public class UserDto {
         this.id = entity.getId();
         this.username = entity.getUsername();
         this.email = entity.getEmail();
-
         this.password = entity.getPassword();
     }
 }
