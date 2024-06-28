@@ -30,13 +30,14 @@ public class UserController {
         this.userService = userService;
     }
     
-
+    //SAVE USER
     @PostMapping("")
     public ResponseEntity<UserDto> createUser(@RequestBody CreateUserDto newUser) {
         UserDto userDTO = userService.createUsername(newUser);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
+    //GET ALL USERS
     @GetMapping("")
     public List<UserDto> getUsers(@RequestParam Optional<String> id) {
         if (id.isPresent()) {
@@ -45,23 +46,41 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @GetMapping("/{id}")
+    
+    //GET BY USER BY ID
+    @GetMapping("/id/{id}")
     public UserDto getUserById(@PathVariable Integer id) {
         return userService.getUsersById(id);
     }
     
+    
+    //LOGIN
+    @PostMapping("/login")
+    public UserDto login(@RequestBody CreateUserDto user) {
+        return userService.loginUser(user.getUsername(), user.getPassword());
+    }
+    
+
+    
+    
+    // NOT USED
+    
+    //GET BY USER USERNAME
     @GetMapping("/userid/{username}")
     public UserDto getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
-    @PutMapping("/up/{username}")
+    //UPDATE USER
+    @PutMapping("/update/{username}")
     public UserDto updateUser(@PathVariable String username, @RequestBody UpdateUserDto updateUserDto) {
         return userService.updateUsers(username, updateUserDto);
     }
 
-	@DeleteMapping("/del/{username}")
-    public ResponseEntity deleteUser(@PathVariable String username) {
+    
+    //DELETE USER
+	@DeleteMapping("/delete/{username}")
+    public ResponseEntity<Object> deleteUser(@PathVariable String username) {
         userService.deleteUsers(username);
         return new ResponseEntity<>(HttpStatus.OK);
     }

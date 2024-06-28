@@ -1,6 +1,6 @@
-
-
 package com.ics.springnuxt.entity;
+
+import org.hibernate.envers.Audited;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,9 +16,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
-@Table(name = "automobile")
-public class Car {
+@Audited
+@Table(name = "automobile2")
+public class UsedCar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -47,4 +46,13 @@ public class Car {
     
     @Column
     private Boolean fuel;
+    
+    @Column
+    private String ownername;
+    
+    @Column
+    private String ownernum;
+    
+    @Column
+    private String address;
 }

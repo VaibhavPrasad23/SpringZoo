@@ -3,6 +3,7 @@ package com.ics.springnuxt.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,55 +16,89 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ics.springnuxt.dto.CreateAnimalDto;
-import com.ics.springnuxt.dto.UpdateAnimalDto;
-import com.ics.springnuxt.dto.ZooDto;
-import com.ics.springnuxt.service.ZooService;
-
+import com.ics.springnuxt.dto.CreateCarDto;
+import com.ics.springnuxt.dto.ShowroomDto;
+import com.ics.springnuxt.dto.UpdateCarDto;
+import com.ics.springnuxt.dto.UsedCarDto;
+import com.ics.springnuxt.service.CarService;
 
 @RestController
-@RequestMapping("/zoo")
-public class ZooController {
-    private ZooService zooService;
+@RequestMapping("/car")
+public class CarController {
+	
+	@Autowired
+    private CarService carService;
 
-    public ZooController (ZooService zooService) {
-        this.zooService = zooService;
+    public CarController (CarService carService) {
+        this.carService = carService;
     }
     
-
-    @PostMapping("")
-    public ResponseEntity<ZooDto> createAnimal(@RequestBody CreateAnimalDto newToDo) {
-        ZooDto zooDTO = zooService.createAnimal(newToDo);
-        return new ResponseEntity<>(zooDTO, HttpStatus.CREATED);
+    //CREATE CAR
+    @PostMapping()
+    public ResponseEntity<ShowroomDto> createCar(@RequestBody CreateCarDto newCAR) 
+    {
+    	ShowroomDto carDTO = carService.createCar(newCAR);
+        return new ResponseEntity<>(carDTO, HttpStatus.CREATED);
     }
+    
+    
+    //GET ALL CARS
+    @GetMapping()
+    public List<ShowroomDto> getCars(@RequestParam Optional<Boolean> fuel) {
 
-    @GetMapping("")
-    public List<ZooDto> getAnimals(@RequestParam Optional<Boolean> completed) {
-        if (completed.isPresent()) {
-            return zooService.getAnimals(completed.get());
-        }
-        return zooService.getAnimals();
+        return carService.getCars();
     }
-
+    
+    
+    //GETS CAR BY ID
     @GetMapping("/{id}")
-    public ZooDto getAnimalById(@PathVariable Long id) {
-        return zooService.getAnimalById(id);
+    public ShowroomDto getCarById(@PathVariable Integer id) {
+        return carService.getCarById(id);
     }
     
-    @GetMapping("/ani/{animal}")
-    public ZooDto getAnimalByUser(@PathVariable String animal) {
-        return zooService.getAnimalByUsername(animal);
+    //GET CAR BY NAME
+    @GetMapping("/car-model/{name}")
+    public ShowroomDto getCarByUser(@PathVariable String name) {
+        return carService.getCarByUsername(name);
+    }
+    
+    //BUY CAR AND POSTS TO USEDCARS
+    @PostMapping("/buyCar/{id}")
+    public UsedCarDto buyCar(@PathVariable String id, @RequestBody UpdateCarDto updateCarDto) {
+        return carService.buyCar(id, updateCarDto);
+        
+    }
+    
+    
+    ///////////////////////////NOT USED///////////////////////////
+    
+    //GET ALL BRANDS
+    @GetMapping("/categories")
+    public List<String> getAllBrands() {
+        return carService.getAllBrands();
     }
 
-    @PutMapping("/ani/{id}")
-    public ZooDto updateAnimal(@PathVariable Long id, @RequestBody UpdateAnimalDto updateAnimalDto) {
-        return zooService.updateToDo(id, updateAnimalDto);
+    
+    //GET CARS OF SPECIFIC BRAND
+    @GetMapping("/category/{brand}")
+    public List<ShowroomDto> getCarByBrandz(@PathVariable String brand) {
+        return carService.getCarByBrand(brand);
     }
+    
+    
+    //UPDATE CAR by name
+    @PutMapping("/car-name/{name}")
+    public ShowroomDto updateCar(@PathVariable String name, @RequestBody UpdateCarDto updateCarDto) {
+        return carService.updateCar(name, updateCarDto);
+    }
+    
 
+
+    //DELETE CAR BY ID
     @SuppressWarnings("rawtypes")
 	@DeleteMapping("/{id}")
-    public ResponseEntity deleteToDo(@PathVariable Long id) {
-        zooService.deleteToDo(id);
+    public ResponseEntity deleteCar(@PathVariable Long id) {
+        carService.deleteCars(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
