@@ -28,7 +28,7 @@ public class CarService {
 	private UsedCarRepository usedcarRepository;
 	
 	@Autowired
-	private DTOToObjectMapper objectMapper; 
+	private DTOToObjectMapper carMapper; 
 
 
 	public CarService (CarRepository carRepository,  UsedCarService usedcarService) {
@@ -37,7 +37,7 @@ public class CarService {
 
 	public ShowroomDto createCar(CreateCarDto createCarDTO) 
 	{
-		Car carx = objectMapper.car(createCarDTO)    ;   
+		Car carx = carMapper.car(createCarDTO)    ;   
 		
 		Car showroom = carRepository.save(carx);
 		return new ShowroomDto(showroom);
@@ -57,23 +57,21 @@ public class CarService {
 		}
 	}
 
-	public ShowroomDto updateCar(String name, UpdateCarDto updateCarDTO) {
-		Optional<Car> carx = carRepository.findByName(name);
-		if (carx.isPresent()) {
-			carx.get().setName(updateCarDTO.getName());
-			carx.get().setBrand(updateCarDTO.getBrand());
-			carx.get().setDescription(updateCarDTO.getDescription());
-			carx.get().setPrice(updateCarDTO.getPrice());
-			carx.get().setType(updateCarDTO.getType());
-			carx.get().setYear (updateCarDTO.getYear());
-			carx.get().setPic (updateCarDTO.getPic());
 
-			carRepository.save(carx.get());
-			return new ShowroomDto(carx.get());
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car update not succeeded");
-		}
-	}
+	
+    public ShowroomDto updateCar(String id, UpdateCarDto updateCarDTO) {
+        Optional<Car> carx = carRepository.findByName(id);
+        if (carx.isPresent()) {
+        	carMapper.updateCarFromDto(updateCarDTO, carx.get());
+            carRepository.save(carx.get());
+            return new ShowroomDto(carx.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car update not succeeded");
+        }
+    }
+
+	
+	
 
 	public void deleteCars(Long id) {
 		Optional<Car> carx = carRepository.findById(id);
@@ -107,7 +105,6 @@ public class CarService {
 	                    car.getType(),
 	                    car.getYear(),
 	                    car.getPic(),
-
 	                    null))
 	            .collect(Collectors.toList());
 	}
@@ -120,53 +117,18 @@ public class CarService {
 	}
 	
 	
-	
-	public UsedCarDto buyCar(String name, UpdateCarDto updateCarDTO) {
-		Optional<Car> carx = carRepository.findByName(name);
-		UsedCar carz = new UsedCar();        
-
-
-		if (carx.isPresent()) {
-			
-
-			carx.get().setName(updateCarDTO.getName());
-			carz.setName(carx.get().getName());
-
-			
-			carx.get().setBrand(updateCarDTO.getBrand());
-			carz.setBrand(carx.get().getBrand());
-			
-			carx.get().setDescription(updateCarDTO.getDescription());
-			carz.setDescription(carx.get().getDescription());
-			
-			carx.get().setPrice(updateCarDTO.getPrice());
-			carz.setPrice(carx.get().getPrice());
-			
-			carx.get().setType(updateCarDTO.getType());
-			carz.setType(carx.get().getType());
-			
-			carx.get().setYear (updateCarDTO.getYear());
-			carz.setYear(carx.get().getYear());
-			
-			carx.get().setPic (updateCarDTO.getPic());
-			carz.setPic(carx.get().getPic());
-			
-	
-			carz.setOwnername(updateCarDTO.getOwnername());
-			carz.setOwnernum(updateCarDTO.getOwnernum());
-			carz.setAddress(updateCarDTO.getAddress());
-						
-			usedcarRepository.save(carz);			
-			carRepository.save(carx.get());
-			
-			new ShowroomDto(carx.get());
-			return new UsedCarDto(carz);
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car update not succeeded");
-		}
-	}
-	
-	
-	
+		
+	 public UsedCarDto buyCar(String name, UpdateCarDto updateCarDTO) {
+	        Optional<Car> carx = carRepository.findByName(name);
+	        if (carx.isPresent()) {
+	            carMapper.updateCarFromUsedCarDto(updateCarDTO, carx.get());
+	            UsedCar carz = carMapper.updateUsedCar(updateCarDTO);
+	            carRepository.save(carx.get());
+	            usedcarRepository.save(carz);
+	            return new UsedCarDto(carz);
+	        } else {
+	            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car update not succeeded");
+	        }
+	    }
 
 }

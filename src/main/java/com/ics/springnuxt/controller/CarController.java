@@ -70,6 +70,16 @@ public class CarController {
     }
     
     
+
+    //DELETE CAR BY ID
+    @SuppressWarnings("rawtypes")
+	@DeleteMapping("/{id}")
+    public ResponseEntity deleteCar(@PathVariable Long id) {
+        carService.deleteCars(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    
     ///////////////////////////NOT USED///////////////////////////
     
     //GET ALL BRANDS
@@ -87,18 +97,11 @@ public class CarController {
     
     
     //UPDATE CAR by name
-    @PutMapping("/car-name/{name}")
+    @PutMapping("/carname/{name}")
     public ShowroomDto updateCar(@PathVariable String name, @RequestBody UpdateCarDto updateCarDto) {
         return carService.updateCar(name, updateCarDto);
     }
     
 
 
-    //DELETE CAR BY ID
-    @SuppressWarnings("rawtypes")
-	@DeleteMapping("/{id}")
-    public ResponseEntity deleteCar(@PathVariable Long id) {
-        carService.deleteCars(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }

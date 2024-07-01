@@ -111,6 +111,16 @@ public class UsedController {
             return carRevisions;
         }
     }
+    
+    
+    
+    //DELETE CAR
+    @SuppressWarnings("rawtypes")
+	@DeleteMapping("/{id}")
+    public ResponseEntity deleteCar(@PathVariable Long id) {
+        carusedService.deleteCars(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     
 ///////////////////////////NOT USED///////////////////////////
@@ -139,13 +149,5 @@ public class UsedController {
         return carusedService.updateCar(id, updateCarDto);
     }
     
-    
-    
-    //DELETE CAR
-    @SuppressWarnings("rawtypes")
-	@DeleteMapping("/{id}")
-    public ResponseEntity deleteCar(@PathVariable Long id) {
-        carusedService.deleteCars(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
 }

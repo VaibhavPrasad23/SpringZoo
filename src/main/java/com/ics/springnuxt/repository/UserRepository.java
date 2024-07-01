@@ -14,4 +14,6 @@ public interface UserRepository extends RevisionRepository<User, Integer, Intege
 	Optional<User> findById(Integer id)	;
 
 	User findByUsernameAndPassword(String username, String password);
+
+
 }

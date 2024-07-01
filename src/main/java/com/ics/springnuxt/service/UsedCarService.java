@@ -13,6 +13,7 @@ import com.ics.springnuxt.dto.CreateCarDto;
 import com.ics.springnuxt.dto.UpdateCarDto;
 import com.ics.springnuxt.dto.UsedCarDto;
 import com.ics.springnuxt.entity.UsedCar;
+import com.ics.springnuxt.mapper.DTOToObjectMapper;
 import com.ics.springnuxt.repository.UsedCarRepository;
 
 @Service
@@ -26,21 +27,16 @@ public class UsedCarService {
 		this.usedcarRepository = carRepository;
 	}
 
+	@Autowired
+	private DTOToObjectMapper usedcarMapper; 
+	
 	
 	public UsedCarDto createCar(CreateCarDto createCarDTO) {
-		UsedCar carx = new UsedCar();        
-		carx.setName(createCarDTO.getName());
-		carx.setOwnername(createCarDTO.getOwnername());
-		carx.setAddress(createCarDTO.getAddress());
-		carx.setOwnernum(createCarDTO.getOwnernum());
-		carx.setBrand(createCarDTO.getBrand());
-		carx.setDescription(createCarDTO.getDescription());
-		carx.setPrice(createCarDTO.getPrice());
-		carx.setType(createCarDTO.getType());
-		carx.setYear (createCarDTO.getYear());
-		carx.setPic(createCarDTO.getPic());
-		UsedCar showroom = usedcarRepository.save(carx);
-		return new UsedCarDto(showroom);
+		
+		UsedCar carx = usedcarMapper.usedCar(createCarDTO); 
+		UsedCar usedCar = usedcarRepository.save(carx);
+		return new UsedCarDto(usedCar);
+
 	}
 
 	
@@ -60,26 +56,16 @@ public class UsedCarService {
 	}
 
 	
-	public UsedCarDto updateCar(String id, UpdateCarDto updateCarDTO) {
-		Optional<UsedCar> carx = usedcarRepository.findByName(id);
-		if (carx.isPresent()) {
-			carx.get().setName(updateCarDTO.getName());
-			carx.get().setBrand(updateCarDTO.getBrand());
-			carx.get().setDescription(updateCarDTO.getDescription());
-			carx.get().setPrice(updateCarDTO.getPrice());
-			carx.get().setType(updateCarDTO.getType());
-			carx.get().setYear (updateCarDTO.getYear());
-			carx.get().setPic (updateCarDTO.getPic());
-			carx.get().setOwnername(updateCarDTO.getOwnername());
-			carx.get().setOwnernum(updateCarDTO.getOwnernum());
-			carx.get().setAddress(updateCarDTO.getAddress());
-
-			usedcarRepository.save(carx.get());
-			return new UsedCarDto(carx.get());
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car update not succeeded");
-		}
-	}
+    public UsedCarDto updateCar(String id, UpdateCarDto updateCarDTO) {
+        Optional<UsedCar> carx = usedcarRepository.findByName(id);
+        if (carx.isPresent()) {
+        	usedcarMapper.updateCarFromDto(updateCarDTO, carx.get());
+            usedcarRepository.save(carx.get());
+            return new UsedCarDto(carx.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Car update not succeeded");
+        }
+    }
 
 	
 	public UsedCarDto updateCarOwner(String id, UpdateCarDto updateCarDTO) {

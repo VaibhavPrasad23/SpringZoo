@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,24 +13,30 @@ import com.ics.springnuxt.dto.CreateUserDto;
 import com.ics.springnuxt.dto.UpdateUserDto;
 import com.ics.springnuxt.dto.UserDto;
 import com.ics.springnuxt.entity.User;
+import com.ics.springnuxt.mapper.DTOToObjectMapper;
 import com.ics.springnuxt.repository.UserRepository;
 
 @Service
 public class UserService {
+	@Autowired
 	private final UserRepository userRepository;
 
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
-	public UserDto createUsername(CreateUserDto createUserDTO) {
-		User user = new User();
-		user.setUsername(createUserDTO.getUsername());
-		user.setEmail(createUserDTO.getEmail());
-		user.setPassword(createUserDTO.getPassword());
-		User savedUser = userRepository.save(user);
-		return new UserDto(savedUser);
+	@Autowired
+	private DTOToObjectMapper userMapper; 
+
+	
+	public UserDto createUsername(CreateUserDto createUserDTO) 
+	{
+		User userx = userMapper.user(createUserDTO);   
+		
+		User newUser = userRepository.save(userx);
+		return new UserDto(newUser);
 	}
+	
 
 	public List<UserDto> getUsers() {
 		List<User> users = userRepository.findAll();
