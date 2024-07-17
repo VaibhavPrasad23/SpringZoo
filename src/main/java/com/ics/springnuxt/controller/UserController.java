@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,9 +32,9 @@ public class UserController {
     }
     
     //SAVE USER
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody CreateUserDto newUser) {
-        UserDto userDTO = userService.createUsername(newUser);
+        UserDto userDTO = userService.createUser(newUser);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
     }
 
@@ -56,12 +57,17 @@ public class UserController {
     
     //LOGIN
     @PostMapping("/login")
-    public UserDto login(@RequestBody CreateUserDto user) {
+    public UserDto login(@Validated @RequestBody CreateUserDto user) 
+    {
         return userService.loginUser(user.getUsername(), user.getPassword());
     }
     
-
-    
+    //CHECK EMAIL
+    @PostMapping("/check-details")
+    public Boolean checkDetails(@RequestBody CreateUserDto user) 
+    {
+    	return userService.checkValue(user.getEmail(),user.getUsername());
+    }
     
     // NOT USED
     

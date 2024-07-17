@@ -1,7 +1,6 @@
 package com.ics.springnuxt.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -52,7 +50,7 @@ public class UsedController {
     
     //GET ALL CARS
     @GetMapping("")
-    public List<UsedCarDto> getCars(@RequestParam Optional<Boolean> fuel) {
+    public List<UsedCarDto> getCars() {
 
         return carusedService.getCars();
     }

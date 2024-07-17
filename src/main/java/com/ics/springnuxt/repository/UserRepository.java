@@ -1,5 +1,6 @@
 package com.ics.springnuxt.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,10 @@ public interface UserRepository extends RevisionRepository<User, Integer, Intege
 	Optional<User> findById(Integer id)	;
 
 	User findByUsernameAndPassword(String username, String password);
+
+	User findByEmail(String email);
+
+	List<User> findByEmailOrUsername(String email, String username);
 
 
 }

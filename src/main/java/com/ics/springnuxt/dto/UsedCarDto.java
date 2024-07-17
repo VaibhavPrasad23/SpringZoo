@@ -22,7 +22,8 @@ public class UsedCarDto {
 
     private Boolean fuel;
 
-    public UsedCarDto(UsedCar entity) {
+    public UsedCarDto(UsedCar entity) 
+    {
         this.id = entity.getId();
         this.name = entity.getName();
         this.brand = entity.getBrand();

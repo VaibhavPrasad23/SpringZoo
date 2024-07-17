@@ -30,7 +30,7 @@ public interface DTOToObjectMapper
     UsedCar updateCarToUsedCar(Car dto);	
 
 	@Mapping(target = "fuel", ignore = true)
-	UsedCar updateUsedCar(UpdateCarDto updateCarDTO);
+	UsedCar updateUsedCar(UpdateCarDto updateCarDTO);	
 	
 	
     void updateCarFromDto(UpdateCarDto dto, @MappingTarget UsedCar entity);

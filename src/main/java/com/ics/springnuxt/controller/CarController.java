@@ -1,7 +1,6 @@
 package com.ics.springnuxt.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ics.springnuxt.dto.CreateCarDto;
@@ -44,8 +42,7 @@ public class CarController {
     
     //GET ALL CARS
     @GetMapping()
-    public List<ShowroomDto> getCars(@RequestParam Optional<Boolean> fuel) {
-
+    public List<ShowroomDto> getCars() {
         return carService.getCars();
     }
     

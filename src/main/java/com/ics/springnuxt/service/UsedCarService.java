@@ -68,7 +68,8 @@ public class UsedCarService {
     }
 
 	
-	public UsedCarDto updateCarOwner(String id, UpdateCarDto updateCarDTO) {
+	public UsedCarDto updateCarOwner(String id, UpdateCarDto updateCarDTO) 
+	{
 		Optional<UsedCar> carx = usedcarRepository.findByName(id);
 		if (carx.isPresent()) {
 			carx.get().setPrice(updateCarDTO.getPrice());
